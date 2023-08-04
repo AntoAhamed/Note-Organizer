@@ -144,6 +144,36 @@ app.get('/get_notes', async (req, res) => {
     }
 })
 
+app.post('/edit_note', async (req, res) => {
+
+    const { title, description, category, _id } = req.body;
+
+    const date = new Date();
+
+    try {
+        await NOTES.updateOne({ _id: _id }, { $set: { title: title, description: description, category: category, date: date.toLocaleDateString(), time: date.toLocaleTimeString() } });
+        res.json("success");
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+})
+
+app.post('/delete_note', async (req, res) => {
+
+    const { _id } = req.body;
+
+    try {
+        await NOTES.deleteMany({ _id: _id });
+        res.json("success");
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+})
+
 
 
 //START THE SERVER

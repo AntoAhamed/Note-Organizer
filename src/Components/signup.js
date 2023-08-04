@@ -43,7 +43,7 @@ function Signup() {
                 </div>
                 <div className='row'>
                     <div className='col'>
-                        <form action='' method='post'>
+                        <form action='' method='post' className='signup-form'>
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Name</label>
                                 <input type="text" className="form-control" value={name} onChange={(e) => { setName(e.target.value) }} id="name" placeholder="Enter your name" />
@@ -56,11 +56,11 @@ function Signup() {
                                 <label htmlFor="password" className="form-label">Password</label>
                                 <input type="password" className="form-control" value={password} onChange={(e) => { setPassword(e.target.value) }} id="password" placeholder="Enter your password" />
                             </div>
-                            <button type="submit" onClick={signup} className="btn btn-outline-secondary">Signup</button>
+                            <button type="submit" onClick={signup} className="btn btn-outline-dark">Signup</button>
                         </form>
                     </div>
                 </div>
-                <p>already have an account? <Link to='/'>login</Link></p>
+                <p className='signup-para'>already have an account? <Link to='/'>login</Link></p>
             </div>
         </>
     )

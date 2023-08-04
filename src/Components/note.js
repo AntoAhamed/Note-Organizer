@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Note(props) {
   return (
@@ -10,14 +11,10 @@ function Note(props) {
           <p className="card-text">
             <small className="text-body-secondary my-4">
               On {props.date} at {props.time} || ({props.category})
-              {/*<Link to="/editNotes" onClick={() => { props.editNotes(props.note) }}>
-                                <button type='button' className='btn btn-sm'>
-                                    <img src={editIcon} alt="" height={"25px"} width={"25px"} title='Edit' />
-                                </button>
-                              </Link>
-                            <button type='button' className='btn btn-sm' onClick={() => { props.deleteNotes(props.note) }} >
-                                <img src={removeIcon} alt="" height={"25px"} width={"25px"} className='mx-2' title='Remove' />
-  </button>*/}
+              <Link to="/edit_note" onClick={() => { props.editNotes(props.note) }}>
+                <button type='button' className='btn btn-outline-secondary btn-sm mx-2'>Edit</button>
+              </Link>
+              <button type='button' className='btn btn-outline-danger btn-sm mx-2' onClick={() => { props.deleteNotes(props.note) }} >Remove</button>
             </small>
           </p>
         </div>

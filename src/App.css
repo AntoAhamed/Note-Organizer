@@ -1,0 +1,21 @@
+body {
+    background-image: url("./Components/Assets/bg.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.App .login-form,
+.App .signup-form {
+    padding: 5% 35% 5% 35%;
+}
+
+.App .login-para,
+.App .signup-para {
+    text-align: center;
+}
+
+.App .add-note,
+.App .edit-note {
+    padding: 1% 20% 1% 20%;
+}

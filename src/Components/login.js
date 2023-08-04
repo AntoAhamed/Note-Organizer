@@ -58,7 +58,7 @@ function Login(props) {
                 </div>
                 <div className='row'>
                     <div className='col'>
-                        <form action='' method='post'>
+                        <form action='' method='post' className='login-form'>
                             <div className="mb-3">
                                 <label htmlFor="email" className="form-label">Email address</label>
                                 <input type="email" className="form-control" value={email} onChange={(e) => { setEmail(e.target.value) }} id="email" placeholder="Enter your email address" />
@@ -67,11 +67,11 @@ function Login(props) {
                                 <label htmlFor="password" className="form-label">Password</label>
                                 <input type="password" className="form-control" value={password} onChange={(e) => { setPassword(e.target.value) }} id="password" placeholder="Enter your password" />
                             </div>
-                            <button type="submit" onClick={login} className="btn btn-outline-secondary">Login</button>
+                            <button type="submit" onClick={login} className="btn btn-outline-dark">Login</button>
                         </form>
                     </div>
                 </div>
-                <p>don't have any account? <Link to='/signup'>signup</Link></p>
+                <p className='login-para'>don't have any account? <Link to='/signup'>signup</Link></p>
             </div>
         </>
     )

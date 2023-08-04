@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios';
 import Note from './Note'
 
 function Your_notes(props) {
-  const [notes, setNotes] = useState([])
-
   async function getData() {
     await axios.get("http://localhost:8000/get_notes")
       .then(res => {
         const data = res.data;
         console.log("Data has been received successfully");
-        setNotes(data.data);
+        props.setNotes(data.data);
         console.log(data);
       }).catch(e => {
         console.log("Data retrive unsuccessfull");
@@ -20,7 +18,7 @@ function Your_notes(props) {
 
   useEffect(() => {
     getData();
-  }, [])
+  }, [props.notes])
 
   return (
     <div className='container'>
@@ -32,7 +30,7 @@ function Your_notes(props) {
 
       </div>
       <div className="row">
-        {notes.length === 0 ? "No notes found" : notes.map((note) => {
+        {props.notes.length === 0 ? "No notes found" : props.notes.map((note) => {
           return <Note key={note._id} note={note} title={note.title} description={note.description} category={note.category} date={note.date} time={note.time} deleteNotes={props.deleteNotes} editNotes={props.editNotes} />
         })}
       </div>
