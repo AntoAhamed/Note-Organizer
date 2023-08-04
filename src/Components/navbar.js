@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, Link } from "react-router-dom";
 
-function navbar() {
+function Navbar() {
     return (
         <>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -29,4 +29,4 @@ function navbar() {
     )
 }
 
-export default navbar
+export default Navbar

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function your_notes() {
+function Your_notes() {
   return (
     <div>
       <p>Here your notes will appare.</p>
@@ -8,4 +8,4 @@ function your_notes() {
   )
 }
 
-export default your_notes
+export default Your_notes

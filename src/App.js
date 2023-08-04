@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from './Components/navbar'
-import Login from './Components/login'
-import Signup from './Components/signup';
-import AddNote from './Components/add_note';
-import YourNotes from './Components/your_notes';
+import Navbar from './Components/Navbar'
+import Login from './Components/Login'
+import Signup from './Components/Signup';
+import AddNote from './Components/Add_note';
+import YourNotes from './Components/Your_notes';
 
 function App() {
   return (
