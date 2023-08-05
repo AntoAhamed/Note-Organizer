@@ -269,6 +269,46 @@ app.get('/get_categories', async (req, res) => {
     }
 })
 
+app.post('/searchByTitle', async (req, res) => {
+
+    const { searchTitle } = req.body;
+
+    const check = await NOTES.find({title: searchTitle, email: tmpUser});
+
+    try {
+        if(check){
+            res.send({ data: check });
+        }
+        else{
+            res.json("failed");
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+})
+
+app.post('/filterByCat', async (req, res) => {
+
+    const { filterCat } = req.body;
+
+    const check = await NOTES.find({category: filterCat, email: tmpUser});
+
+    try {
+        if(check){
+            res.send({ data: check });
+        }
+        else{
+            res.json("failed");
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+})
+
 
 
 //START THE SERVER
