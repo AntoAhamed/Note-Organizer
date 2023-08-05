@@ -35,8 +35,8 @@ const usersSchema = new mongoose.Schema({
 
 const notesSchema = new mongoose.Schema({
     date: {
-        type: Date,
-        default: Date.now
+        type: String,
+        /*default: Date.now*/
     },
     time: {
         type: String
@@ -114,7 +114,14 @@ app.post('/signup', [
 
 var tmpUser;
 
-app.post('/login', async (req, res) => {
+app.post('/login', [
+    body('email', 'Enter a valid email').isEmail(),
+    body('password', 'Enter a valid password').isLength({ min: 4 })
+], async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        return res.send({ errors: result.array() });
+    }
 
     const { email, password } = req.body;
 

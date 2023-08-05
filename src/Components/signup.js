@@ -40,7 +40,7 @@ function Signup() {
 
     return (
         <>
-            <div className='container'>
+            <div className='container' style={{marginTop: '5%'}}>
                 <div className="col" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
                     <b>Signup Here</b>
                 </div>

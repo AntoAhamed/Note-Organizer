@@ -17,10 +17,13 @@ function Login(props) {
                         if (res.data === "failed") {
                             alert("User dose not exist!");
                         }
-                        else {
+                        else if (res.data === "success") {
                             getData();
                             alert("You are loged in successfully");
                             navigate("/add_note");
+                        }
+                        else{
+                            alert("Inavlid");
                         }
                     }).catch(e => {
                         console.log(e);
@@ -50,7 +53,7 @@ function Login(props) {
 
     return (
         <>
-            <div className='container'>
+            <div className='container' style={{marginTop: '5%'}}>
                 <div className="row mb-3">
                     <div className="col" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
                         <b>Login Here</b>

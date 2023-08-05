@@ -44,7 +44,7 @@ function Edit_note(props) {
   }
 
   return (
-    <div className='container'>
+    <div className='container' style={{marginTop: '5%'}}>
       <div className="row mb-3">
         <div className="col" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
           <b>Edit Note</b>

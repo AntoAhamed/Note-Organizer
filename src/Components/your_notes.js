@@ -21,7 +21,7 @@ function Your_notes(props) {
   }, [props.notes])
 
   return (
-    <div className='container'>
+    <div className='container' style={{marginTop: '5%'}}>
       <div className="row mb-3">
 
         <div className='col-4'>
