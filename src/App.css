@@ -6,7 +6,8 @@ body {
 }
 
 .App .login-form,
-.App .signup-form {
+.App .signup-form,
+.App .add-category {
     padding: 5% 35% 5% 35%;
 }
 

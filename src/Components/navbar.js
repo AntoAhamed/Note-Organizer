@@ -24,6 +24,9 @@ function Navbar(props) {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/your_notes">Your Notes</Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/add_category">Add Categories</Link>
+                            </li>
                         </ul>
                         <button onClick={logout} disabled={!props.user?._id} className="btn btn-outline-light d-flex">Logout</button>
                     </div>

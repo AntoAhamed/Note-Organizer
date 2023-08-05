@@ -18,9 +18,12 @@ function Signup() {
                         if (res.data === "failed") {
                             alert("User already exist!");
                         }
-                        else {
+                        else if (res.data === "success") {
                             alert("You are signed up successfully");
                             navigate("/");
+                        }
+                        else{
+                            alert("Invalid");
                         }
                     }).catch(e => {
                         console.log(e);

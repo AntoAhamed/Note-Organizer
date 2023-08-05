@@ -24,8 +24,22 @@ function Your_notes(props) {
     <div className='container'>
       <div className="row mb-3">
 
-        <div className="col" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
+        <div className='col-4'>
+          <form class="d-flex py-4" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search by title" aria-label="Search" />
+            <button class="btn btn-outline-dark" type="submit">Search</button>
+          </form>
+        </div>
+
+        <div className="col-4" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
           <b>Your Notes</b>
+        </div>
+
+        <div className='col-4'>
+          <form class="d-flex py-4" role="search">
+            <input class="form-control me-2" type="search" placeholder="Filter by category" aria-label="Search" />
+            <button class="btn btn-outline-dark" type="submit">Filter</button>
+          </form>
         </div>
 
       </div>

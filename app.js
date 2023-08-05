@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const app = express()
+const { body, validationResult } = require('express-validator');
 const port = 8000
 
 app.use(express.json())
@@ -17,35 +18,82 @@ async function main() {
 }
 
 const usersSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
 });
 
 const notesSchema = new mongoose.Schema({
-    date: String,
-    time: String,
-    title: String,
-    description: String,
-    category: String,
-    email: String
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    time: {
+        type: String
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    }
+});
+
+const categoriesSchema = new mongoose.Schema({
+    category: {
+        type: String,
+        required: true
+    }
 });
 
 const USERS = mongoose.model('users', usersSchema);
-const NOTES = mongoose.model('notes', notesSchema); //DB connections ends here
+const NOTES = mongoose.model('notes', notesSchema);
+const CATEGORIES = mongoose.model('categories', categoriesSchema); //DB connections ends here
 
 app.get('/', cors(), function (req, res) {
 
 })
 
-app.post('/signup', async (req, res) => {
+app.post('/signup', [
+    body('name', 'Enter a valid name').isLength({ min: 3 }),
+    body('email', 'Enter a valid email').isEmail(),
+    body('password', 'Enter a valid password').isLength({ min: 4 })
+], async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+        return res.send({ errors: result.array() });
+    }
 
     const { name, email, password } = req.body;
 
-    const data = {
+    const userData = {
         name: name,
         email: email,
         password: password
+    }
+
+    const data = {
+        email: email,
     }
 
     const check = await USERS.findOne(data);
@@ -55,14 +103,13 @@ app.post('/signup', async (req, res) => {
             res.json("failed");
         }
         else {
-            await USERS.insertMany([data]);
+            await USERS.insertMany([userData]);
             res.json("success");
         }
     }
     catch (e) {
         console.log(e);
     }
-
 })
 
 var tmpUser;
@@ -100,10 +147,6 @@ app.post('/add_note', async (req, res) => {
 
     const date = new Date();
 
-    //const check = await USER.findOne({ email: email });
-
-    //const newBalance = Number(check.balance) - Number(cost);
-
     const data = {
         date: date.toLocaleDateString(),
         time: date.toLocaleTimeString(),
@@ -113,9 +156,19 @@ app.post('/add_note', async (req, res) => {
         email: email
     }
 
+    const categoryData = {
+        category: category
+    }
+
+    const check = await CATEGORIES.findOne(categoryData);
+
     try {
         await NOTES.insertMany([data]);
-        //await USER.updateOne({ email: email }, { $set: { balance: newBalance } });
+
+        if (!check) {
+            await CATEGORIES.insertMany([data]);
+        }
+
         res.json("success");
     }
     catch (e) {
@@ -172,6 +225,41 @@ app.post('/delete_note', async (req, res) => {
         console.log(e);
     }
 
+})
+
+app.post('/add_category', async (req, res) => {
+
+    const { newCategory } = req.body;
+
+    const data = {
+        category: newCategory
+    }
+
+    const check = await CATEGORIES.findOne(data);
+
+    try {
+        if (check) {
+            res.json("failed");
+        }
+        else {
+            await CATEGORIES.insertMany([data]);
+            res.json("success");
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+})
+
+app.get('/get_categories', async (req, res) => {
+    try {
+        const categories = await CATEGORIES.find();
+        res.send({ data: categories });
+    }
+    catch (e) {
+        console.log(e)
+    }
 })
 
 
