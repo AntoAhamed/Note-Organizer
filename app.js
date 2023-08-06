@@ -2,12 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require("cors")
 const bodyParser = require("body-parser")
+const multer = require('multer')
+const path = require('path')
 const app = express()
 const { body, validationResult } = require('express-validator');
 const port = 8000
 
 app.use(express.json())
 app.use(express.urlencoded())
+app.use(express.static('public'))
 app.use(cors())
 
 main().catch(err => console.log(err)); //DB connections starts from here
@@ -49,6 +52,9 @@ const notesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    image: {
+        type: String
+    },
     category: {
         type: String,
         required: true
@@ -66,9 +72,16 @@ const categoriesSchema = new mongoose.Schema({
     }
 });
 
+const imagesSchema = new mongoose.Schema({
+    image: {
+        type: String
+    }
+})
+
 const USERS = mongoose.model('users', usersSchema);
 const NOTES = mongoose.model('notes', notesSchema);
-const CATEGORIES = mongoose.model('categories', categoriesSchema); //DB connections ends here
+const CATEGORIES = mongoose.model('categories', categoriesSchema);
+const IMAGES = mongoose.model('images', imagesSchema); //DB connections ends here
 
 app.get('/', cors(), function (req, res) {
 
@@ -173,7 +186,7 @@ app.post('/add_note', async (req, res) => {
         await NOTES.insertMany([data]);
 
         if (!check) {
-            await CATEGORIES.insertMany([data]);
+            await CATEGORIES.insertMany([categoryData]);
         }
 
         res.json("success");
@@ -181,7 +194,6 @@ app.post('/add_note', async (req, res) => {
     catch (e) {
         console.log(e);
     }
-
 })
 
 app.get('/get_user', async (req, res) => {
@@ -273,13 +285,13 @@ app.post('/searchByTitle', async (req, res) => {
 
     const { searchTitle } = req.body;
 
-    const check = await NOTES.find({title: searchTitle, email: tmpUser});
+    const check = await NOTES.find({ title: searchTitle, email: tmpUser });
 
     try {
-        if(check){
+        if (check) {
             res.send({ data: check });
         }
-        else{
+        else {
             res.json("failed");
         }
     }
@@ -293,13 +305,13 @@ app.post('/filterByCat', async (req, res) => {
 
     const { filterCat } = req.body;
 
-    const check = await NOTES.find({category: filterCat, email: tmpUser});
+    const check = await NOTES.find({ category: filterCat, email: tmpUser });
 
     try {
-        if(check){
+        if (check) {
             res.send({ data: check });
         }
-        else{
+        else {
             res.json("failed");
         }
     }
@@ -308,6 +320,42 @@ app.post('/filterByCat', async (req, res) => {
     }
 
 })
+
+//Image operation starts from here
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/Images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({
+    storage: storage
+})
+
+var tmpImage;
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    tmpImage = req.file.filename;
+    IMAGES.create({ image: req.file.filename })
+        .then(result => res.json(result))
+        .catch(err => console.log(err))
+})
+
+app.post('/setImage', (req, res) => {
+    const { _id } = req.body;
+    NOTES.updateOne({ _id: _id }, { $set: { image: tmpImage } })
+        .then(res => res.json(res))
+        .catch(err => res.json(err))
+}) //Image operation ends here
+
+/*app.get('/getImage', (req, res) => {
+    IMAGES.find()
+        .then(images => res.json(images))
+        .catch(err => res.json(err))
+})*/
 
 
 

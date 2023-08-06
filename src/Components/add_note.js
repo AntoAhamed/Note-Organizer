@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 function Add_note(props) {
+  /*const [file, setFile] = useState('')
+  const [image, setImage] = useState([])
+
+  const handleUpload = async (e) => {
+    const formdata = new FormData()
+    formdata.append('file', file)
+    await axios.post('http://localhost:8000/upload', formdata)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }*/
+
   async function save(e) {
     e.preventDefault();
 
@@ -39,8 +50,18 @@ function Add_note(props) {
     props.setCategory('');
   }
 
+  /*async function getPhoto(){
+    await axios.get('http://localhost:8000/getImage')
+    .then(res => setImage(res.data[11].image))
+    .catch(err => console.log(err))
+  }
+
+  useEffect(()=>{
+    getPhoto();
+  },[])*/
+
   return (
-    <div className='container' style={{marginTop: '5%'}}>
+    <div className='container' style={{ marginTop: '5%' }}>
       <div className="row mb-3">
         <div className="col" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
           <b>Add Notes</b>
@@ -57,6 +78,13 @@ function Add_note(props) {
               <label htmlFor="description" className="form-label">Description</label>
               <textarea className="form-control" value={props.description} onChange={(e) => { props.setDescription(e.target.value) }} id="description" rows="5" placeholder="Enter description"></textarea>
             </div>
+            {/*<div className='mb-3'>
+              <label htmlFor="image">Choose photo </label>
+              <input type="file" onChange={(e) => { setFile(e.target.files[0]) }} id="image" accept="image/png, image/jpeg" />
+              <button onClick={handleUpload}>Upload</button>
+              <br />
+              <img src={`http://localhost:8000/Images/` + image} width={'100px'} height={'100px'} alt=''></img>
+  </div>*/}
             <div className="mb-3">
               <label htmlFor="category" className="form-label">Category</label>
               <input type="text" className="form-control" value={props.category} onChange={(e) => { props.setCategory(e.target.value) }} id="category" placeholder="Enter category" />

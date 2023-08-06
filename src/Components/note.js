@@ -1,12 +1,37 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Note(props) {
+  const [file, setFile] = useState('')
+  const [image, setImage] = useState([])
+  const navigate = useNavigate()
+
+  async function handleUpload(e) {
+    e.preventDefault();
+
+    const formdata = new FormData()
+    formdata.append('file', file)
+    await axios.post('http://localhost:8000/upload', formdata)
+      .then(res => {
+        setPhoto();
+        alert("Uploaded successfully");
+        navigate('/add_note');
+      })
+      .catch(err => console.log(err))
+  }
+
+  async function setPhoto() {
+    await axios.post('http://localhost:8000/setImage', {_id: props.note?._id})
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
   return (
     <div className="col-sm-6 mb-3 mb-sm-0 my-4">
       <div className="card">
         <div className="card-body">
-          <h4 className="card-title"><b>{props.title}</b></h4>
+          <h4 className="card-title">{props.note?.image ? <img src={`http://localhost:8000/Images/` + props.note?.image} width={'60px'} height={'40px'} alt='image'></img>:''}<b> {props.title}</b></h4>
           <p className="card-text">{props.description}</p>
           <p className="card-text">
             <small className="text-body-secondary my-4">
@@ -15,6 +40,11 @@ function Note(props) {
                 <button type='button' className='btn btn-outline-secondary btn-sm mx-2'>Edit</button>
               </Link>
               <button type='button' className='btn btn-outline-danger btn-sm mx-2' onClick={() => { props.deleteNotes(props.note) }} >Remove</button>
+              <div className="mt-2">
+                <label htmlFor="image">Choose photo </label>
+                <input type="file" value={file.fileName} onChange={(e) => { setFile(e.target.files[0]) }} id="image" accept="image/png, image/jpeg" />
+                <button className='btn btn-outline-secondary btn-sm' onClick={handleUpload}>Upload</button>
+              </div>
             </small>
           </p>
         </div>
