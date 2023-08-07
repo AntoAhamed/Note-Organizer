@@ -17,7 +17,7 @@ function Add_category() {
               setNewCategory('');
             }
             else {
-              alert("unsuccess");
+              alert("Category already exists!");
             }
           }).catch(e => {
             console.log(e);
@@ -30,6 +30,29 @@ function Add_category() {
     else {
       alert("Empty field can't be submitted!");
     }
+  }
+
+  async function remove(e) {
+    try {
+      await axios.post('http://localhost:8000/delete_category', { _id: e._id, category: e.category })
+        .then(res => {
+          if (res.data === "success") {
+            alert("Successfully removed.");
+          }
+          else {
+            alert("Note exists with this category.");
+          }
+        }).catch(e => {
+          console.log(e);
+        });
+    }
+    catch (e) {
+      console.log(e);
+    }
+}
+
+  const deleteCategory = (e) => {
+    remove(e);
   }
 
   async function getCategories() {
@@ -86,8 +109,11 @@ function Add_category() {
               <tbody>
                 {categories.length === 0 ? "No categories found" : categories.map((e) => {
                   return <>
-                    <tr>
-                      <td style={{ textAlign: 'center' }}>{e.category}</td>
+                    <tr key={e._id}>
+                      <td style={{ textAlign: 'center' }}>
+                        {e.category+` `}
+                        <button type='button' onClick={()=>{deleteCategory(e)}} className='btn btn-outline-danger btn-sm mx-2' >Remove</button>
+                      </td>
                     </tr>
                   </>
                 })}

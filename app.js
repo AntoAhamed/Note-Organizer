@@ -357,6 +357,26 @@ app.post('/setImage', (req, res) => {
         .catch(err => res.json(err))
 })*/
 
+app.post('/delete_category', async (req, res) => {
+
+    const { _id, category } = req.body;
+
+    const check = await NOTES.findOne({ category: category })
+
+    try {
+        if (!check) {
+            await CATEGORIES.deleteMany({ _id: _id });
+            res.json("success");
+        }else{
+            res.json("failed");
+        }
+    }
+    catch (e) {
+        console.log(e);
+    }
+
+})
+
 
 
 //START THE SERVER

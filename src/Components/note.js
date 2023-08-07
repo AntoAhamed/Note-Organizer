@@ -1,10 +1,10 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 function Note(props) {
   const [file, setFile] = useState('')
-  const [image, setImage] = useState([])
+  //const [image, setImage] = useState([])
   const navigate = useNavigate()
 
   async function handleUpload(e) {
@@ -15,7 +15,7 @@ function Note(props) {
     await axios.post('http://localhost:8000/upload', formdata)
       .then(res => {
         setPhoto();
-        alert("Uploaded successfully");
+        alert("Uploaded successfully. If login require please login again.");
         navigate('/add_note');
       })
       .catch(err => console.log(err))
