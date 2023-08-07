@@ -13,14 +13,14 @@ function Edit_note(props) {
         await axios.post('http://localhost:8000/edit_note', { title: props.newTitle, description: props.newDesc, category: props.newCat, _id: props.toEditNote?._id })
           .then(res => {
             if (res.data === "success") {
-              alert("Edited successfully.");
+              alert("Note edited successfully");
               props.setNewTitle('');
               props.setNewDesc('');
               props.setNewCat('');
               navigate("/your_notes");
             }
             else {
-              alert("unsuccess");
+              alert("Something went wrong. Note can't be edited!");
             }
           }).catch(e => {
             console.log(e);
@@ -44,7 +44,7 @@ function Edit_note(props) {
   }
 
   return (
-    <div className='container' style={{marginTop: '5%'}}>
+    <div className='container' style={{ marginTop: '5%' }}>
       <div className="row mb-3">
         <div className="col" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
           <b>Edit Note</b>

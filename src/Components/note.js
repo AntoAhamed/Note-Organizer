@@ -22,7 +22,7 @@ function Note(props) {
   }
 
   async function setPhoto() {
-    await axios.post('http://localhost:8000/setImage', {_id: props.note?._id})
+    await axios.post('http://localhost:8000/setImage', { _id: props.note?._id })
       .then(res => console.log(res))
       .catch(err => console.log(err))
   }
@@ -31,7 +31,7 @@ function Note(props) {
     <div className="col-sm-6 mb-3 mb-sm-0 my-4">
       <div className="card">
         <div className="card-body">
-          <h4 className="card-title">{props.note?.image ? <img src={`http://localhost:8000/Images/` + props.note?.image} width={'60px'} height={'40px'} alt='image'></img>:''}<b> {props.title}</b></h4>
+          <h4 className="card-title">{props.note?.image ? <img src={`http://localhost:8000/Images/` + props.note?.image} width={'60px'} height={'40px'} alt='image'></img> : ''}<b> {props.title}</b></h4>
           <p className="card-text">{props.description}</p>
           <p className="card-text">
             <small className="text-body-secondary my-4">

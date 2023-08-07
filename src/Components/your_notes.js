@@ -7,8 +7,8 @@ function Your_notes(props) {
   const [searchTitle, setSearchTitle] = useState('')
   const [filterCat, setFilterCat] = useState('')
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
   const itemsPerPage = 4;
 
   async function search(e) {
@@ -144,27 +144,23 @@ function Your_notes(props) {
   return (
     <div className='container' style={{ marginTop: '5%' }}>
       <div className="row mb-3">
-
         <div className='col-4'>
           <form className="d-flex py-4" role="search">
             <input className="form-control me-2" value={searchTitle} onChange={(e) => { setSearchTitle(e.target.value) }} type="search" placeholder="Search by title" aria-label="Search" />
             <button className="btn btn-outline-dark" onClick={search} type="submit">Search</button>
           </form>
         </div>
-
         <div className="col-4" style={{ textAlign: "center", fontSize: "45px", paddingBottom: "30px" }}>
           <b>Your Notes</b>
           <p style={{ fontSize: "20px" }}>{`Page No. ` + (currentPage + 1) + ` of ` + totalPages}</p>
           <p style={{ fontSize: "20px" }}>{`Total ` + props.notes.length + ` Notes`}</p>
         </div>
-
         <div className='col-4'>
           <form className="d-flex py-4" role="search">
             <input className="form-control me-2" value={filterCat} onChange={(e) => { setFilterCat(e.target.value) }} type="search" placeholder="Filter by category" aria-label="Search" />
             <button className="btn btn-outline-dark" onClick={filter} type="submit">Filter</button>
           </form>
         </div>
-
       </div>
       <div className="row">
         {subset.length === 0 ? "No notes found" : subset.map((note) => {
@@ -173,12 +169,12 @@ function Your_notes(props) {
       </div>
       <div className='row' style={{ textAlign: 'center' }}>
         <ReactPaginate
-          breakLabel="..."
-          nextLabel="next >>"
+          breakLabel={"..."}
+          nextLabel={"next >>"}
           onPageChange={handlePageChange}
           pageRangeDisplayed={5}
           pageCount={totalPages}
-          previousLabel="<< previous"
+          previousLabel={"<< previous"}
           forcePage={currentPage}
           containerClassName={"pagination-container"}
           activeClassName={"active-page"}

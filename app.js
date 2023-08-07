@@ -5,7 +5,7 @@ const bodyParser = require("body-parser")
 const multer = require('multer')
 const path = require('path')
 const app = express()
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator')
 const port = 8000
 
 app.use(express.json())
@@ -20,6 +20,7 @@ async function main() {
     console.log("Connection build successfully");
 }
 
+//User model
 const usersSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -36,6 +37,9 @@ const usersSchema = new mongoose.Schema({
     }
 });
 
+const USERS = mongoose.model('users', usersSchema);
+
+//Note model
 const notesSchema = new mongoose.Schema({
     date: {
         type: String,
@@ -65,6 +69,9 @@ const notesSchema = new mongoose.Schema({
     }
 });
 
+const NOTES = mongoose.model('notes', notesSchema);
+
+//Category model
 const categoriesSchema = new mongoose.Schema({
     category: {
         type: String,
@@ -72,21 +79,22 @@ const categoriesSchema = new mongoose.Schema({
     }
 });
 
+const CATEGORIES = mongoose.model('categories', categoriesSchema);
+
+//Image model
 const imagesSchema = new mongoose.Schema({
     image: {
         type: String
     }
-})
+});
 
-const USERS = mongoose.model('users', usersSchema);
-const NOTES = mongoose.model('notes', notesSchema);
-const CATEGORIES = mongoose.model('categories', categoriesSchema);
 const IMAGES = mongoose.model('images', imagesSchema); //DB connections ends here
 
 app.get('/', cors(), function (req, res) {
 
 })
 
+//signup api
 app.post('/signup', [
     body('name', 'Enter a valid name').isLength({ min: 3 }),
     body('email', 'Enter a valid email').isEmail(),
@@ -125,8 +133,10 @@ app.post('/signup', [
     }
 })
 
+//to store logged in users email
 var tmpUser;
 
+//login api
 app.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Enter a valid password').isLength({ min: 4 })
@@ -158,11 +168,10 @@ app.post('/login', [
     catch (e) {
         console.log(e);
     }
-
 })
 
+//api to add note
 app.post('/add_note', async (req, res) => {
-
     const { title, description, category, email } = req.body;
 
     const date = new Date();
@@ -196,6 +205,7 @@ app.post('/add_note', async (req, res) => {
     }
 })
 
+//api to get user
 app.get('/get_user', async (req, res) => {
     try {
         const userData = await USERS.findOne({ email: tmpUser });
@@ -206,6 +216,7 @@ app.get('/get_user', async (req, res) => {
     }
 })
 
+//api to get note
 app.get('/get_notes', async (req, res) => {
     try {
         const notes = await NOTES.find({ email: tmpUser });
@@ -216,8 +227,8 @@ app.get('/get_notes', async (req, res) => {
     }
 })
 
+//api to edit note
 app.post('/edit_note', async (req, res) => {
-
     const { title, description, category, _id } = req.body;
 
     const date = new Date();
@@ -229,11 +240,10 @@ app.post('/edit_note', async (req, res) => {
     catch (e) {
         console.log(e);
     }
-
 })
 
+//api to delete note
 app.post('/delete_note', async (req, res) => {
-
     const { _id } = req.body;
 
     try {
@@ -243,11 +253,10 @@ app.post('/delete_note', async (req, res) => {
     catch (e) {
         console.log(e);
     }
-
 })
 
+//api to add category
 app.post('/add_category', async (req, res) => {
-
     const { newCategory } = req.body;
 
     const data = {
@@ -268,9 +277,9 @@ app.post('/add_category', async (req, res) => {
     catch (e) {
         console.log(e);
     }
-
 })
 
+//api to get category
 app.get('/get_categories', async (req, res) => {
     try {
         const categories = await CATEGORIES.find();
@@ -281,8 +290,8 @@ app.get('/get_categories', async (req, res) => {
     }
 })
 
+//api to get notes which is searched by title
 app.post('/searchByTitle', async (req, res) => {
-
     const { searchTitle } = req.body;
 
     const check = await NOTES.find({ title: searchTitle, email: tmpUser });
@@ -298,11 +307,10 @@ app.post('/searchByTitle', async (req, res) => {
     catch (e) {
         console.log(e);
     }
-
 })
 
+//api to get notes which is filtered by category
 app.post('/filterByCat', async (req, res) => {
-
     const { filterCat } = req.body;
 
     const check = await NOTES.find({ category: filterCat, email: tmpUser });
@@ -318,11 +326,9 @@ app.post('/filterByCat', async (req, res) => {
     catch (e) {
         console.log(e);
     }
-
 })
 
-//Image operation starts from here
-const storage = multer.diskStorage({
+const storage = multer.diskStorage({ //Image operation starts from here
     destination: (req, file, cb) => {
         cb(null, 'public/Images')
     },
@@ -335,8 +341,10 @@ const upload = multer({
     storage: storage
 })
 
+//to store uploaded image name to set in note
 var tmpImage;
 
+//api to upload image
 app.post('/upload', upload.single('file'), (req, res) => {
     tmpImage = req.file.filename;
     IMAGES.create({ image: req.file.filename })
@@ -344,6 +352,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
         .catch(err => console.log(err))
 })
 
+//api to set image in notes
 app.post('/setImage', (req, res) => {
     const { _id } = req.body;
     NOTES.updateOne({ _id: _id }, { $set: { image: tmpImage } })
@@ -357,8 +366,8 @@ app.post('/setImage', (req, res) => {
         .catch(err => res.json(err))
 })*/
 
+//api to delete category
 app.post('/delete_category', async (req, res) => {
-
     const { _id, category } = req.body;
 
     const check = await NOTES.findOne({ category: category })
@@ -367,16 +376,16 @@ app.post('/delete_category', async (req, res) => {
         if (!check) {
             await CATEGORIES.deleteMany({ _id: _id });
             res.json("success");
-        }else{
+        } else {
             res.json("failed");
         }
     }
     catch (e) {
         console.log(e);
     }
-
 })
 
+//Write next apis from here...
 
 
 //START THE SERVER

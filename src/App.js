@@ -22,22 +22,22 @@ function App() {
   const [newCat, setNewCat] = useState('')
 
   async function remove(_id) {
-      try {
-        await axios.post('http://localhost:8000/delete_note', { _id })
-          .then(res => {
-            if (res.data === "success") {
-              alert("Successfully removed.");
-            }
-            else {
-              alert("unsuccess");
-            }
-          }).catch(e => {
-            console.log(e);
-          });
-      }
-      catch (e) {
-        console.log(e);
-      }
+    try {
+      await axios.post('http://localhost:8000/delete_note', { _id })
+        .then(res => {
+          if (res.data === "success") {
+            alert("Note successfully removed");
+          }
+          else {
+            alert("Something went wrong. Note can not be removed!");
+          }
+        }).catch(e => {
+          console.log(e);
+        });
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   const deleteNotes = (note) => {

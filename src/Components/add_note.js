@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import axios from 'axios'
 
 function Add_note(props) {
@@ -21,13 +21,13 @@ function Add_note(props) {
         await axios.post('http://localhost:8000/add_note', { title: props.title, description: props.description, category: props.category, email: props.user?.email })
           .then(res => {
             if (res.data === "success") {
-              alert("Added successfully.");
+              alert("Note added successfully");
               props.setTitle('');
               props.setDescription('');
               props.setCategory('');
             }
             else {
-              alert("unsuccess");
+              alert("Something went wrong. Note can't be added!");
             }
           }).catch(e => {
             console.log(e);
