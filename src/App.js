@@ -53,6 +53,7 @@ function App() {
 
   return (
     <div className='App'>
+      {/*This is my full app */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navbar user={user} setUser={setUser} />}>
